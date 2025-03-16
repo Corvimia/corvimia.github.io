@@ -1,5 +1,3 @@
-"use client"
-
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import { addMonths, addDays, startOfMonth, endOfMonth, parseISO, differenceInDays } from "date-fns"
 import React from "react"

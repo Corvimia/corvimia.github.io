@@ -1,6 +1,4 @@
-"use client"
-
-import { createContext, useContext, useState, useEffect, type ReactNode, useRef } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode, useRef, useCallback, useMemo } from "react"
 import { parseISO, format, addMonths, addWeeks, addDays } from "date-fns"
 import { useTimeline } from "./use-timeline"
 

@@ -20,6 +20,7 @@ const nextConfig = {
   distDir: 'out',
   // This baseUrl setting is needed for GitHub Pages
   basePath: process.env.NODE_ENV === 'production' ? '/corvimia.github.io' : '',
+  // Pages Router is used by default when not specifying appDir
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
