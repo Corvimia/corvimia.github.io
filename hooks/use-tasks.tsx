@@ -79,17 +79,20 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }
     
     try {
+      let state = { tasks }
       const savedState = localStorage.getItem("timelineTaskManager")
+      
       if (savedState) {
-        const state = JSON.parse(savedState)
-        localStorage.setItem(
-          "timelineTaskManager",
-          JSON.stringify({
-            ...state,
-            tasks,
-          }),
-        )
+        try {
+          // Try to parse the saved state and merge with new tasks
+          const parsedState = JSON.parse(savedState)
+          state = { ...parsedState, tasks }
+        } catch (error) {
+          console.error("Error parsing saved state, overwriting with new data:", error)
+        }
       }
+      
+      localStorage.setItem("timelineTaskManager", JSON.stringify(state))
       lastSavedTasksLengthRef.current = tasks.length;
     } catch (error) {
       console.error("Error saving tasks to localStorage:", error)
