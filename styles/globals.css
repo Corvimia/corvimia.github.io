@@ -94,3 +94,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Offline mode styles */
+.offline-mode {
+  /* Add a subtle indicator when app is offline */
+  position: relative;
+}
+
+.offline-mode::after {
+  content: 'Offline Mode';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  text-align: center;
+  padding: 4px;
+  font-size: 12px;
+  z-index: 9999;
+}
