@@ -7,6 +7,7 @@ import { AudioProvider } from "@/contexts/AudioContext"
 import GeigerSoundGenerator from "@/components/GeigerSoundGenerator"
 import IntervalSlider from "@/components/IntervalSlider"
 import SoundPlayer from "@/components/SoundPlayer"
+import SkeuomorphicGeigerCounter from "@/components/SkeuomorphicGeigerCounter"
 import type { GeigerSoundConfig } from "@/components/GeigerSoundGenerator"
 
 const GeigerCounterSim = () => {
@@ -32,10 +33,27 @@ const GeigerCounterSim = () => {
           <CardTitle className="text-center">Geiger Counter Simulator</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-6">
-            <IntervalSlider onRateChange={handleRateChange} />
-            <SoundPlayer eventRate={eventRate} soundConfig={soundConfig} />
-          </div>
+          <Tabs defaultValue="standard" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="standard">Standard View</TabsTrigger>
+              <TabsTrigger value="skeuomorphic">Realistic Device</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="standard" className="space-y-6 pt-4">
+              <div className="space-y-6">
+                <IntervalSlider onRateChange={handleRateChange} />
+                <SoundPlayer eventRate={eventRate} soundConfig={soundConfig} />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="skeuomorphic" className="space-y-6 pt-4">
+              <SkeuomorphicGeigerCounter 
+                eventRate={eventRate} 
+                soundConfig={soundConfig}
+                onRateChange={handleRateChange}
+              />
+            </TabsContent>
+          </Tabs>
 
           <Tabs defaultValue="settings" className="w-full">
             <TabsList className="grid w-full grid-cols-1">
