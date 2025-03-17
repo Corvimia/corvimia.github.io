@@ -13,8 +13,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 // Estimate text width based on character count and font size
 const estimateTextWidth = (text: string, fontSize = 12) => {
   // Average character width in pixels (approximate)
-  const avgCharWidth = fontSize * 0.6
-  return text.length * avgCharWidth + 24 // Add padding
+  const avgCharWidth = fontSize * 0.55 // Slightly reduced from 0.6
+  return text.length * avgCharWidth + 16 // Reduced padding from 24 to 16
 }
 
 interface TaskNode {
@@ -152,6 +152,11 @@ export function Timeline() {
     return false
   }
 
+  // Constant for base vertical offset from the timeline
+  const baseTimelineOffset = 25 // Increased distance from timeline for level 0 tasks
+  const standardLineWidth = 1 // Standard width for all vertical lines
+  const levelSpacing = 35 // Vertical spacing between different node levels
+
   // Process tasks to handle overlaps with a more sophisticated algorithm
   const processedTasks = useMemo(() => {
     if (!timelineWidth) return []
@@ -218,8 +223,8 @@ export function Timeline() {
           const existingLeft = existingNode.position - existingNode.width / 2
           const existingRight = existingNode.position + existingNode.width / 2
 
-          // Add a small buffer to prevent nodes from being too close
-          const buffer = 2 // percentage points
+          // Increased buffer to prevent nodes from being too close
+          const buffer = 3 // percentage points (increased from 1)
 
           if (
             (nodeLeft >= existingLeft - buffer && nodeLeft <= existingRight + buffer) ||
@@ -260,7 +265,7 @@ export function Timeline() {
   }
 
   // Calculate timeline height based on max level
-  const timelineHeight = Math.max(150, 30 + maxLevel * 40 + 60) // Base height + level height + padding
+  const timelineHeight = Math.max(180, 30 + maxLevel * 35 + 80) // Increased height and padding
 
   // Find the node for a given task ID
   const findNodeById = (id: string) => {
@@ -291,11 +296,11 @@ export function Timeline() {
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
-          <div className="min-w-[800px] relative" ref={timelineRef}>
+          <div className="min-w-[600px] relative" ref={timelineRef}>
             {/* Date labels */}
             <div className="flex justify-between mb-2">
               {timelineDates.map((date, index) => (
-                <div key={index} className="text-center px-2">
+                <div key={index} className="text-center px-1">
                   <div className="text-sm font-medium">{format(date, "EEE d/M")}</div>
                 </div>
               ))}
@@ -359,42 +364,28 @@ export function Timeline() {
                           if (!depNode) return null
 
                           // Calculate vertical positions based on node levels
-                          const sourceY = 4 + taskNode.level * 40 + 20 // Middle of task pill
-                          const targetY = 4 + depNode.level * 40 + 20 // Middle of dependency pill
+                          const sourceY = 4 // This is the timeline position
+                          const targetY = 4 + baseTimelineOffset + taskNode.level * levelSpacing // Task position
 
+                          // Simple curved line using border-radius instead of complex positioning
                           return (
                             <div
                               key={`${task.id}-${dep.id}`}
-                              className="absolute bg-navy-600"
+                              className="absolute bg-gradient-to-r from-navy-600 to-navy-600"
                               style={{
                                 left: `${Math.min(taskNode.position, depNode.position)}%`,
                                 top: `${Math.min(sourceY, targetY)}px`,
                                 width: `${Math.abs(taskNode.position - depNode.position)}%`,
-                                height: `${Math.abs(sourceY - targetY) + 1}px`,
+                                height: `${Math.abs(sourceY - targetY) + 2}px`,
                                 zIndex: 5,
-                                borderLeft: taskNode.position > depNode.position ? "1px solid" : "none",
-                                borderRight: taskNode.position < depNode.position ? "1px solid" : "none",
-                                borderTop: sourceY > targetY ? "1px solid" : "none",
-                                borderBottom: sourceY < targetY ? "1px solid" : "none",
-                                borderColor: "rgb(30, 58, 138)", // navy-600
+                                borderRadius: '4px',
+                                border: '1px solid rgb(30, 58, 138)', // navy-600
+                                borderLeft: taskNode.position > depNode.position ? "1px solid rgb(30, 58, 138)" : "none",
+                                borderRight: taskNode.position < depNode.position ? "1px solid rgb(30, 58, 138)" : "none",
+                                borderTop: sourceY > targetY ? "1px solid rgb(30, 58, 138)" : "none",
+                                borderBottom: sourceY < targetY ? "1px solid rgb(30, 58, 138)" : "none",
                               }}
-                            >
-                              <ArrowRight
-                                className="absolute h-3 w-3 text-navy-600"
-                                style={{
-                                  right: taskNode.position < depNode.position ? "-6px" : "auto",
-                                  left: taskNode.position > depNode.position ? "-6px" : "auto",
-                                  top: sourceY === targetY ? "-5px" : "auto",
-                                  bottom: sourceY < targetY ? "-6px" : "auto",
-                                  transform:
-                                    taskNode.position < depNode.position
-                                      ? "rotate(0deg)"
-                                      : sourceY === targetY
-                                        ? "rotate(180deg)"
-                                        : "rotate(270deg)",
-                                }}
-                              />
-                            </div>
+                            />
                           )
                         })}
 
@@ -404,42 +395,28 @@ export function Timeline() {
                           if (!depNode) return null
 
                           // Calculate vertical positions based on node levels
-                          const sourceY = 4 + taskNode.level * 40 + 20 // Middle of task pill
-                          const targetY = 4 + depNode.level * 40 + 20 // Middle of dependency pill
+                          const sourceY = 4 // This is the timeline position
+                          const targetY = 4 + baseTimelineOffset + depNode.level * levelSpacing // Dep task position
 
+                          // Simple curved line for dependent tasks
                           return (
                             <div
                               key={`dependent-${task.id}-${dep.id}`}
-                              className="absolute bg-blue-400"
+                              className="absolute bg-gradient-to-r from-blue-400 to-blue-400"
                               style={{
                                 left: `${Math.min(taskNode.position, depNode.position)}%`,
                                 top: `${Math.min(sourceY, targetY)}px`,
                                 width: `${Math.abs(taskNode.position - depNode.position)}%`,
-                                height: `${Math.abs(sourceY - targetY) + 1}px`,
+                                height: `${Math.abs(sourceY - targetY) + 2}px`,
                                 zIndex: 5,
-                                borderLeft: taskNode.position > depNode.position ? "1px solid" : "none",
-                                borderRight: taskNode.position < depNode.position ? "1px solid" : "none",
-                                borderTop: sourceY > targetY ? "1px solid" : "none",
-                                borderBottom: sourceY < targetY ? "1px solid" : "none",
-                                borderColor: "rgb(96, 165, 250)", // blue-400
+                                borderRadius: '4px',
+                                border: '1px solid rgb(96, 165, 250)', // blue-400
+                                borderLeft: taskNode.position > depNode.position ? "1px solid rgb(96, 165, 250)" : "none",
+                                borderRight: taskNode.position < depNode.position ? "1px solid rgb(96, 165, 250)" : "none",
+                                borderTop: sourceY > targetY ? "1px solid rgb(96, 165, 250)" : "none",
+                                borderBottom: sourceY < targetY ? "1px solid rgb(96, 165, 250)" : "none",
                               }}
-                            >
-                              <ArrowRight
-                                className="absolute h-3 w-3 text-blue-400"
-                                style={{
-                                  right: depNode.position < taskNode.position ? "-6px" : "auto",
-                                  left: depNode.position > taskNode.position ? "-6px" : "auto",
-                                  top: sourceY === targetY ? "-5px" : "auto",
-                                  bottom: sourceY < targetY ? "-6px" : "auto",
-                                  transform:
-                                    depNode.position < taskNode.position
-                                      ? "rotate(0deg)"
-                                      : sourceY === targetY
-                                        ? "rotate(180deg)"
-                                        : "rotate(270deg)",
-                                }}
-                              />
-                            </div>
+                            />
                           )
                         })}
                       </>
@@ -456,14 +433,31 @@ export function Timeline() {
                         className="absolute"
                         style={{
                           left: `${node.position}%`,
-                          top: `${4 + node.level * 40}px`,
+                          top: '0', // Reset the top positioning
                           transform: "translateX(-50%)",
                           zIndex: 15,
                         }}
                       >
                         <div className="flex flex-col items-center">
-                          <div className="h-0.5 w-0.5 bg-amber-500"></div>
-                          <div className="mt-1 bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap">
+                          <div 
+                            className="h-0.5 w-0.5 bg-amber-500"
+                            style={{ 
+                              position: 'absolute',
+                              top: '-4px', // Start at the timeline (accounting for container's top padding)
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              height: `${baseTimelineOffset + node.level * levelSpacing + 4}px`, // Add 4px to reach the timeline
+                              width: `${standardLineWidth}px`, // Use standard line width
+                              zIndex: 1 // Put line behind the node
+                            }}
+                          ></div>
+                          <div 
+                            className="mt-1 bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap"
+                            style={{
+                              marginTop: `${baseTimelineOffset + node.level * levelSpacing}px`, // Push the event marker down by the height of the line
+                              zIndex: 2 // Ensure it appears on top of the line
+                            }}
+                          >
                             {node.title}
                           </div>
                         </div>
@@ -503,7 +497,7 @@ export function Timeline() {
                             className={`absolute cursor-pointer transition-opacity duration-200 ${opacity}`}
                             style={{
                               left: `${node.position}%`,
-                              top: `${4 + node.level * 40}px`, // Offset vertically based on level
+                              top: '0', // Reset the top positioning
                               transform: "translateX(-50%)",
                               zIndex: hoveredTaskId === task.id ? 20 : 15,
                             }}
@@ -512,13 +506,19 @@ export function Timeline() {
                             onClick={() => handleTaskClick(task.id)}
                           >
                             <div className="flex flex-col items-center">
-                              {/* Vertical line that goes all the way to the timeline */}
-                              {node.level > 0 && (
-                                <div
-                                  className={`w-0.5 ${task.important ? "bg-amber-400" : "bg-teal-500"}`}
-                                  style={{ height: `${node.level * 40}px` }}
-                                ></div>
-                              )}
+                              {/* Vertical line that goes from the timeline to the task */}
+                              <div
+                                className={`w-0.5 ${task.important ? "bg-amber-400" : "bg-teal-500"}`}
+                                style={{ 
+                                  height: `${baseTimelineOffset + node.level * levelSpacing + 4}px`,
+                                  position: 'absolute',
+                                  top: '-4px', // Start at the timeline (accounting for container's top padding)
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  width: `${standardLineWidth}px`, // Use standard line width
+                                  zIndex: 1 // Put line behind the node
+                                }}
+                              ></div>
                               <div
                                 className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap max-w-[150px] truncate ${
                                   task.important ? "bg-amber-400" : "bg-teal-500"
@@ -526,6 +526,8 @@ export function Timeline() {
                                 style={{
                                   // Adjust position to account for border width
                                   transform: borderClass ? "translateY(-1px)" : "none",
+                                  marginTop: `${baseTimelineOffset + node.level * levelSpacing}px`, // Push the task pill down by the height of the line
+                                  zIndex: 2 // Ensure it appears on top of the line
                                 }}
                               >
                                 {task.title}

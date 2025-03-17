@@ -128,15 +128,19 @@ export function TimelineProvider({ children }: { children: ReactNode }) {
     const totalDays = differenceInDays(visibleRange.end, visibleRange.start)
 
     // Determine how many dates to show based on zoom level
+    // Using smaller intervals to reduce spacing between dates
     let interval = 1 // days between each date marker
+    let maxDates = 12 // Target number of dates to show on timeline
 
-    if (zoomLevel === 1)
-      interval = 1 // Month view: show every day
-    else if (zoomLevel === 2)
-      interval = 7 // Quarter view: show weekly
-    else if (zoomLevel === 3)
-      interval = 14 // Half year view: show bi-weekly
-    else if (zoomLevel === 4) interval = 30 // Full view: show monthly
+    if (zoomLevel === 1) {
+      interval = Math.max(1, Math.floor(totalDays / maxDates)) // Month view: more compact
+    } else if (zoomLevel === 2) {
+      interval = Math.max(3, Math.floor(totalDays / maxDates)) // Quarter view: more compact than weekly
+    } else if (zoomLevel === 3) {
+      interval = Math.max(7, Math.floor(totalDays / maxDates)) // Half year view: more compact than bi-weekly
+    } else if (zoomLevel === 4) {
+      interval = Math.max(14, Math.floor(totalDays / maxDates)) // Full view: more compact than monthly
+    }
 
     let current = new Date(visibleRange.start)
 
