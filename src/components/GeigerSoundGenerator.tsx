@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Label } from "@/components/ui/label"
-import { useLocalStorage } from "@/src/hooks/useLocalStorage"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
 
 export type GeigerSoundConfig = {
   sampleRate: number

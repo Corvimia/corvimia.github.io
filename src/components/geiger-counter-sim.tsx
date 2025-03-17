@@ -3,11 +3,11 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AudioProvider } from "@/src/contexts/AudioContext"
-import GeigerSoundGenerator from "@/src/components/GeigerSoundGenerator"
-import IntervalSlider from "@/src/components/IntervalSlider"
-import SoundPlayer from "@/src/components/SoundPlayer"
-import type { GeigerSoundConfig } from "@/src/components/GeigerSoundGenerator"
+import { AudioProvider } from "@/contexts/AudioContext"
+import GeigerSoundGenerator from "@/components/GeigerSoundGenerator"
+import IntervalSlider from "@/components/IntervalSlider"
+import SoundPlayer from "@/components/SoundPlayer"
+import type { GeigerSoundConfig } from "@/components/GeigerSoundGenerator"
 
 const GeigerCounterSim = () => {
   const [eventRate, setEventRate] = useState<number>(5)

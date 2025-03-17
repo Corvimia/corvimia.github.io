@@ -1,0 +1,6 @@
+---
+description: Use `npx tsc` after making changes
+globs: 
+alwaysApply: false
+---
+When you make changes, you need to run `npx tsc` to confirm that the changes are working

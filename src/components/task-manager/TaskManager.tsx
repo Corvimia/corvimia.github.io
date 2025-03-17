@@ -8,10 +8,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTimeline } from "@/hooks/use-timeline"
 import { useTasks, type Task } from "@/hooks/use-tasks"
-import { CsvImportDialog } from "../csv-import-dialog"
+import { CsvImportDialog } from "../common/csv-import-dialog"
 import { exportTasksToCSV } from "@/utils/csv-utils"
 import { generateTestData } from "@/utils/test-data"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { TaskList } from "./TaskList"
 import { TimelineView } from "./TimelineView"
 import { TaskForm } from "./forms/TaskForm"
@@ -64,8 +64,10 @@ export function TaskManager() {
   }
 
   // Handle updating an existing task
-  const handleUpdateTask = (updatedTask: Task) => {
-    updateTask(updatedTask)
+  const handleUpdateTask = (updatedTask: Task | Omit<Task, "id" | "completed">) => {
+    if ('id' in updatedTask) {
+      updateTask(updatedTask as Task)
+    }
     setEditingTask(null)
     setIsEditDialogOpen(false)
   }

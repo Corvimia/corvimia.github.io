@@ -22,12 +22,12 @@
 
     /* Paths */
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     },
     "allowJs": true,
     "esModuleInterop": true
   },
-  "include": ["src", "components", "hooks", "lib", "styles", "utils"],
+  "include": ["src"],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

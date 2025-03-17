@@ -108,7 +108,13 @@ export function TaskDetailsModal({
             )}
             {task.dateType === "relative" && (
               <p className="text-xs text-muted-foreground mt-1">
-                {task.relativeValue} {task.relativeUnit}{task.relativeValue !== 1 ? "s" : ""} {task.relativeDirection} {task.relativeTo === "event" ? "the event" : "now"}
+                {task.relativeTime ? (
+                  <>
+                    {task.relativeTime.value} {task.relativeTime.unit}{task.relativeTime.value !== 1 ? "s" : ""} {task.relativeTime.direction} the event
+                  </>
+                ) : (
+                  "No relative time set"
+                )}
               </p>
             )}
           </div>

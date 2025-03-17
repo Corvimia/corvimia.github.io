@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Volume2, VolumeX } from "lucide-react"
-import { useAudio } from "@/src/contexts/AudioContext"
+import { useAudio } from "@/contexts/AudioContext"
 import type { GeigerSoundConfig } from "./GeigerSoundGenerator"
 
 type SoundPlayerProps = {
