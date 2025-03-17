@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Volume2, VolumeX } from "lucide-react"
 import { useAudio } from "@/contexts/AudioContext"
 import type { GeigerSoundConfig } from "./GeigerSoundGenerator"
+import LedIndicator from "./LedIndicator"
 
 type SoundPlayerProps = {
   eventRate: number // events per second
@@ -16,7 +17,9 @@ const SoundPlayer = ({
   soundConfig = { sampleRate: 44100, duration: 0.05, decayRate: 40 } 
 }: SoundPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [ledActive, setLedActive] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const ledTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { getAudioContext } = useAudio()
   const audioBufferRef = useRef<AudioBuffer | null>(null)
 
@@ -37,6 +40,9 @@ const SoundPlayer = ({
   useEffect(() => {
     return () => {
       stopSound()
+      if (ledTimeoutRef.current) {
+        clearTimeout(ledTimeoutRef.current)
+      }
     }
   }, [])
 
@@ -96,6 +102,18 @@ const SoundPlayer = ({
 
       // Play the sound
       source.start()
+      
+      // Activate LED
+      setLedActive(true)
+      
+      // Turn off LED after a short duration
+      if (ledTimeoutRef.current) {
+        clearTimeout(ledTimeoutRef.current)
+      }
+      
+      ledTimeoutRef.current = setTimeout(() => {
+        setLedActive(false)
+      }, 100) // LED stays on for 100ms
     }
   }
 
@@ -132,6 +150,7 @@ const SoundPlayer = ({
       clearTimeout(timeoutRef.current)
       timeoutRef.current = null
       setIsPlaying(false)
+      setLedActive(false)
     }
   }
 
@@ -145,10 +164,20 @@ const SoundPlayer = ({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground text-center">
-        Average: {eventRate.toFixed(2)} events/second
-        <br />({(60 * eventRate).toFixed(1)} counts per minute)
-      </p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <p className="text-sm text-muted-foreground text-center">
+          Average: {eventRate.toFixed(2)} events/second
+          <br />({(60 * eventRate).toFixed(1)} counts per minute)
+        </p>
+        <div className="flex items-center justify-center">
+          <LedIndicator 
+            active={ledActive} 
+            color="red" 
+            size="md" 
+            className="ml-2"
+          />
+        </div>
+      </div>
       <Button onClick={toggleSound} className="w-full" variant={isPlaying ? "destructive" : "default"}>
         {isPlaying ? (
           <>
