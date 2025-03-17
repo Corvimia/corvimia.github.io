@@ -62,41 +62,25 @@ export function TaskNode({
             left: `${node.position}%`,
             top: '0', // Reset the top positioning
             transform: "translateX(-50%)",
-            zIndex: isHovered ? 20 : 15,
+            zIndex: isHovered ? 20 : 15, // Higher z-index to be above lines
           }}
           onMouseEnter={() => onMouseEnter(task.id)}
           onMouseLeave={() => onMouseLeave()}
           onClick={() => onClick(task.id)}
         >
-          <div className="flex flex-col items-center">
-            {/* Vertical line that goes from the timeline to the task */}
-            <div
-              className={`w-0.5 ${task.important ? "bg-amber-400" : "bg-teal-500"}`}
-              style={{ 
-                height: `${CONSTANTS.BASE_TIMELINE_OFFSET + node.level * CONSTANTS.LEVEL_SPACING + 4}px`,
-                position: 'absolute',
-                top: '-4px', // Start at the timeline (accounting for container's top padding)
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: `${CONSTANTS.STANDARD_LINE_WIDTH}px`, // Use standard line width
-                zIndex: 1 // Put line behind the node
-              }}
-            ></div>
-            
-            {/* Task pill */}
-            <div
-              className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap max-w-[150px] truncate ${
-                task.important ? "bg-amber-400" : "bg-teal-500"
-              } text-white ${borderClass} ${borderColor}`}
-              style={{
-                // Adjust position to account for border width
-                transform: borderClass ? "translateY(-1px)" : "none",
-                marginTop: `${CONSTANTS.BASE_TIMELINE_OFFSET + node.level * CONSTANTS.LEVEL_SPACING}px`, // Push the task pill down by the height of the line
-                zIndex: 2 // Ensure it appears on top of the line
-              }}
-            >
-              {task.title}
-            </div>
+          {/* Task pill only - vertical line is drawn separately */}
+          <div
+            className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap max-w-[150px] truncate ${
+              task.important ? "bg-amber-400" : "bg-teal-500"
+            } text-white ${borderClass} ${borderColor}`}
+            style={{
+              // Adjust position to account for border width
+              transform: borderClass ? "translateY(-1px)" : "none",
+              marginTop: `${CONSTANTS.BASE_TIMELINE_OFFSET + node.level * CONSTANTS.LEVEL_SPACING}px`, // Push the task pill down
+              zIndex: 2 // Ensure it appears on top of the line
+            }}
+          >
+            {task.title}
           </div>
         </div>
       </TooltipTrigger>

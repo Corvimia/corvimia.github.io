@@ -12,6 +12,7 @@ import { TimelineControls } from "./TimelineControls"
 import { TimelineHeader } from "./TimelineHeader"
 import { EventNode } from "./EventNode"
 import { TaskNode } from "./TaskNode"
+import { VerticalLines } from "./VerticalLines"
 import { DependencyLines } from "./DependencyLines"
 import { 
   processTaskNodes, 
@@ -138,6 +139,12 @@ export function Timeline() {
               <div className="absolute top-4 left-0 right-0 h-px bg-border"></div>
 
               <TooltipProvider>
+                {/* Step 1: Draw vertical lines first, so they're beneath everything else */}
+                <VerticalLines
+                  nodes={processedNodes}
+                  getTaskById={getTaskById}
+                />
+
                 {/* Dependency lines */}
                 <DependencyLines
                   hoveredTaskId={hoveredTaskId}
@@ -146,14 +153,14 @@ export function Timeline() {
                   visibleRange={visibleRange}
                 />
 
-                {/* Event node */}
+                {/* Step 2: Event node */}
                 {processedNodes
                   .filter((node) => node.isEvent)
                   .map((node, index) => (
                     <EventNode key={`event-${index}`} node={node} />
                   ))}
 
-                {/* Task nodes */}
+                {/* Step 2: Task nodes (drawn on top of lines) */}
                 {processedNodes
                   .filter((node) => node.task && !node.isEvent)
                   .map((node) => (
