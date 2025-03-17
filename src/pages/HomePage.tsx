@@ -15,7 +15,7 @@ export default function HomePage() {
         </h1>
         
         <p className="text-xl text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
-          A collection of helpful tools and utilities designed to make your life easier.
+          A collection of helpful tools and utilities that I work on when I'm bored.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
