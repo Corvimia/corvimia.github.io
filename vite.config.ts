@@ -15,5 +15,5 @@ export default defineConfig({
     // Ensure static assets are copied to output directory
     assetsDir: 'assets',
   },
-  base: process.env.NODE_ENV === 'production' ? '/corvimia.github.io/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/corvimia.github.io' : '/',
 }); 
