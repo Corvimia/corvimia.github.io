@@ -114,10 +114,6 @@
     - Improve performance of visual elements
     - Reduce battery impact on mobile devices
 
-28. **Add offline processing support**
-    - Enable functionality without internet connection
-    - Implement local storage for settings
-
 29. **Refactor the sound generation code into more modular components**
     - Create reusable audio components
     - Improve code organization and readability
