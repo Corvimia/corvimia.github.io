@@ -18,12 +18,26 @@ export default function HomePage() {
           A collection of helpful tools and utilities designed to make your life easier.
         </p>
         
-        <div className="flex justify-center">
-          <Link to="/timeline" className="group max-w-md w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <Link to="/timeline" className="group">
             <div className="bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
               <h2 className="text-2xl font-semibold mb-3 group-hover:text-primary">Timeline Task Manager</h2>
               <p className="text-muted-foreground mb-4">
                 Organize your tasks around key events and deadlines with a visual timeline interface.
+              </p>
+              <div className="flex justify-end">
+                <span className="text-primary text-sm font-medium group-hover:underline">
+                  Open →
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/geiger-counter" className="group">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
+              <h2 className="text-2xl font-semibold mb-3 group-hover:text-primary">Geiger Counter Simulator</h2>
+              <p className="text-muted-foreground mb-4">
+                Simulate radiation detection with customizable sound and event rate settings.
               </p>
               <div className="flex justify-end">
                 <span className="text-primary text-sm font-medium group-hover:underline">
