@@ -69,4 +69,8 @@ export default defineConfig({
     assetsDir: 'assets',
   },
   base: process.env.NODE_ENV === 'production' ? '/corvimia.github.io' : '/',
+  server: {
+    port: parseInt(process.env.VITE_PORT || '5173'),
+    allowedHosts: ['mia.test', 'corvimia.github.io']
+  }
 }); 

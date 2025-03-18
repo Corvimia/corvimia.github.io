@@ -8,6 +8,7 @@ import GeigerSoundGenerator from "@/components/GeigerSoundGenerator"
 import IntervalSlider from "@/components/IntervalSlider"
 import SoundPlayer from "@/components/SoundPlayer"
 import SkeuomorphicGeigerCounter from "@/components/SkeuomorphicGeigerCounter"
+import RadiationLevelGraph from "@/components/RadiationLevelGraph"
 import type { GeigerSoundConfig } from "@/components/GeigerSoundGenerator"
 
 const GeigerCounterSim = () => {
@@ -43,6 +44,7 @@ const GeigerCounterSim = () => {
               <div className="space-y-6">
                 <IntervalSlider onRateChange={handleRateChange} />
                 <SoundPlayer eventRate={eventRate} soundConfig={soundConfig} />
+                <RadiationLevelGraph eventRate={eventRate} />
               </div>
             </TabsContent>
             
@@ -52,6 +54,9 @@ const GeigerCounterSim = () => {
                 soundConfig={soundConfig}
                 onRateChange={handleRateChange}
               />
+              <div className="mt-6">
+                <RadiationLevelGraph eventRate={eventRate} />
+              </div>
             </TabsContent>
           </Tabs>
 
