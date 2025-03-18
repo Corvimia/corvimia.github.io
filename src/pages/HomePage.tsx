@@ -18,7 +18,7 @@ export default function HomePage() {
           A collection of helpful tools and utilities that I work on when I'm bored.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <Link to="/timeline" className="group">
             <div className="bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
               <h2 className="text-2xl font-semibold mb-3 group-hover:text-primary">Timeline Task Manager</h2>
@@ -38,6 +38,20 @@ export default function HomePage() {
               <h2 className="text-2xl font-semibold mb-3 group-hover:text-primary">Geiger Counter Simulator</h2>
               <p className="text-muted-foreground mb-4">
                 Simulate radiation detection with customizable sound and event rate settings.
+              </p>
+              <div className="flex justify-end">
+                <span className="text-primary text-sm font-medium group-hover:underline">
+                  Open →
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/tasks" className="group">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-white/10">
+              <h2 className="text-2xl font-semibold mb-3 group-hover:text-primary">Task List Manager</h2>
+              <p className="text-muted-foreground mb-4">
+                Create and manage nested task lists with Markdown import and export functionality.
               </p>
               <div className="flex justify-end">
                 <span className="text-primary text-sm font-medium group-hover:underline">
